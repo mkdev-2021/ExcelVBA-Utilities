@@ -910,3 +910,38 @@ ErrHandler:
     End If
     
 End Function
+
+'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Function CheckFileExists(strFilePathName As String) As Boolean
+
+    'Dim strFilePathName As String
+    'strFilePathName = "C:\Temp\Test File.xlsx"
+    Dim strFileExists As String
+    strFileExists = Dir(strFilePathName)
+
+    If strFileExists = "" Then
+         CheckFileExists = False
+     Else
+         CheckFileExists = True
+     End If
+
+End Function
+
+'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Function CheckFolderExists(strFolderPathName As String) As Boolean
+
+'    Dim strFolderPathName As String
+'    strFolderPathName = "C:\Temp\"
+    
+    Dim strFolderExists As String
+    strFolderExists = Dir(strFolderPathName, vbDirectory)
+    
+    If strFolderExists = "" Then
+        CheckFolderExists = False
+    Else
+        CheckFolderExists = True
+    End If
+
+End Function
