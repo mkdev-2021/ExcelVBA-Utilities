@@ -945,3 +945,20 @@ Function CheckFolderExists(strFolderPathName As String) As Boolean
     End If
 
 End Function
+
+'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+'' Function to get the next Firday Date in the format DD/MM/YY
+
+Function getNextFridayDate()
+    
+    Dim dNext_Friday As Date
+    If Weekday(Now) <= 6 Then
+       dNext_Friday = Now + (6 - Weekday(Now))
+    Else
+        dNext_Friday = Now + (Weekday(Now) - 1)
+    End If
+    
+    getNextFridayDate = Format(dNext_Friday, "DD/MM/YY")
+    
+End Function
+
