@@ -962,3 +962,71 @@ Function getNextFridayDate()
     
 End Function
 
+'' Function to get Last day of the month
+Function LastDayOfMonth(Optional sd As Date = 0) As Date
+    If sd = 0 Then sd = VBA.Date
+    LastDayOfMonth = VBA.DateSerial(VBA.Year(sd), VBA.Month(sd) + 1, 0)
+    
+End Function
+
+'------------------------------------------------------------------------------------------------------------------------------------------------------
+Function SuperMid(ByVal strMain As String, str1 As String, str2 As String, Optional reverse As Boolean) As String
+    'This function is copied from https://wellsr.com/vba/2016/excel/easily-extract-text-between-two-strings-with-vba/
+    'DESCRIPTION: Extract the portion of a string between the two substrings defined in str1 and str2.
+    'DEVELOPER: Ryan Wells (wellsr.com)
+    'HOW TO USE: - Pass the argument your main string and the 2 strings you want to find in the main string.
+    ' - This function will extract the values between the end of your first string and the beginning
+    ' of your next string.
+    ' - If the optional boolean "reverse" is true, an InStrRev search will occur to find the last
+    ' instance of the substrings in your main string.
+    Dim i As Integer, j As Integer, temp As Variant
+    On Error GoTo errhandler:
+    If reverse = True Then
+        i = InStrRev(strMain, str1)
+        j = InStrRev(strMain, str2)
+        If Abs(j - i) < Len(str1) Then j = InStrRev(strMain, str2, i)
+        If i = j Then 'try to search 2nd half of string for unique match
+            j = InStrRev(strMain, str2, i - 1)
+        End If
+    Else
+        i = InStr(1, strMain, str1)
+        j = InStr(1, strMain, str2)
+        If Abs(j - i) < Len(str1) Then j = InStr(i + Len(str1), strMain, str2)
+        If i = j Then 'try to search 2nd half of string for unique match
+            j = InStr(i + 1, strMain, str2)
+        End If
+    End If
+    If i = 0 And j = 0 Then GoTo errhandler:
+    If j = 0 Then j = Len(strMain) + Len(str2) 'just to make it arbitrarily large
+    If i = 0 Then i = Len(strMain) + Len(str1) 'just to make it arbitrarily large
+    If i > j And j <> 0 Then 'swap order
+        temp = j
+        j = i
+        i = temp
+        temp = str2
+        str2 = str1
+        str1 = temp
+    End If
+    i = i + Len(str1)
+    SuperMid = Mid(strMain, i, j - i)
+    Exit Function
+errhandler:
+    End
+End Function
+
+'Copy single Array of data to a column starting from Start cell range
+Sub copyArrayToColumn(arrayData As Variant, startCell As Range)
+    
+    Dim tmpRng As Range
+    Set tmpRng = startCell.Resize(UBound(arrayData) + 1)
+    tmpRng = Application.Transpose(colOrder)
+    
+End Sub
+
+Function getColumnDataToArray(wSheet As Worksheet, colStr As String) As Variant
+
+   rowCnt = wSheet.Range(colStr & Rows.Count).End(xlUp).row
+   getColumnDataToArray = wSheet.Range(colStr & "1:" & colStr & rowCnt).Value
+   
+End Function
+
